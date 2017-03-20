@@ -1,10 +1,10 @@
 % Universidade Federal de Mato Grosso
 % Instituto de Engenharia
-% InteligÃªncia Artificial - 2016/2
+% Inteligência Artificial - 2016/2
 %
 % Script Octave/MATLAB que deve ser utilizado para treinar a rede neural
 %
-% VocÃª DEVE alterar os valores da variÃ¡vel lambda (linha 40)
+% Você DEVE alterar os valores da variável lambda (linha 40)
 % 
 %  
 %
@@ -13,7 +13,7 @@ clear ; close all; clc
 
 %% Parametros da rede
 input_layer_size  = 400;  % imagens de 20x20 
-hidden_layer_size = 25;   % 25 unidades na camada intermediÃ¡ria
+hidden_layer_size = 25;   % 25 unidades na camada intermediária
 num_labels = 10;          % 10 classe, de 1 a 10
                           % (note que o digito "0" foi mapeado para a classe 10)
 
@@ -51,7 +51,7 @@ costFunction = @(p) cost_function(p, ...
                                    hidden_layer_size, ...
                                    num_labels, X, y, lambda);
 
-% FunÃ§Ã£o de otimizaÃ§Ã£o
+% Função de otimização
 [nn_params, cost] = fmincg(costFunction, initial_nn_params, options);
 
 Theta1 = reshape(nn_params(1:hidden_layer_size * (input_layer_size + 1)), ...
@@ -59,9 +59,3 @@ Theta1 = reshape(nn_params(1:hidden_layer_size * (input_layer_size + 1)), ...
 
 Theta2 = reshape(nn_params((1 + (hidden_layer_size * (input_layer_size + 1))):end), ...
                  num_labels, (hidden_layer_size + 1));
-
-
-
-
-
-

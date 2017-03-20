@@ -1,12 +1,12 @@
 % Universidade Federal de Mato Grosso
 % Instituto de Engenharia
-% InteligÃªncia Artificial - 2016/2
+% Inteligência Artificial - 2016/2
 %
-% Script Octave/MATLAB que deve ser utilizado para testar a implementaÃ§Ã£o 
-% do exercÃ­cio.
-% Este arquivo nÃ£o deve ser  alterado.
+% Script Octave/MATLAB que deve ser utilizado para testar a implementação 
+% do exercício.
+% Este arquivo não deve ser  alterado.
 %
-% VocÃª deve alterar apenas os arquivos: 
+% Você deve alterar apenas os arquivos: 
 % 
 %     predict.m
 %     cost_function.m
@@ -38,23 +38,23 @@ fprintf('Programa parado. Digite enter para continuar.\n');
 pause;
 
 
-%% ================ Carregando ParÃ¢metros ================
+%% ================ Carregando Parâmetros ================
 
 
-fprintf('\nCarregando parÃ¢metros salvos ...\n')
+fprintf('\nCarregando parâmetros salvos ...\n')
 
 load('ex5weights.mat');
 
 nn_params = [Theta1(:) ; Theta2(:)];
 
 
-%% ============= Parte 1: Testando a implementaÃ§Ã£o da classificaÃ§Ã£o =============
+%% ============= Parte 1: Testando a implementação da classificação =============
 %  
 %  
 
 pred = predict(Theta1, Theta2, X);
 
-fprintf('\nAcuracia do treinamento: %f\n', mean(double(pred == y)) * 100);
+fprintf('\nAcurácia do treinamento: %f\n', mean(double(pred == y)) * 100);
 
 fprintf('Programa parado. Digite enter para continuar.\n');
 pause;
@@ -71,7 +71,7 @@ for i = 1:10
     displayData(X(rp(i), :));
 
     pred = predict(Theta1, Theta2, X(rp(i),:));
-    fprintf('\nEsta imagem foi classificada como: %d (digito %d)\n', pred, mod(pred, 10));
+    fprintf('\nEsta imagem foi classificada como: %d (dígito %d)\n', pred, mod(pred, 10));
 
     % Pause
 	fprintf('Programa parado. Digite enter para continuar.\n');
@@ -80,27 +80,27 @@ end
 
 
 
-%% ======= Parte 2a: Testando implementaÃ§Ã£o da funÃ§Ã£o custo (sem regularizacao) =======
+%% ======= Parte 2a: Testando implementação da função custo (sem regularizacao) =======
 %  
 %
-fprintf('\nFunÃ§Ã£o de custo (sem regularizaÃ§Ã£o)...\n')
+fprintf('\nFunção de custo (sem regularização)...\n')
 
-% desconsidera a regularizaÃ§Ã£o.
+% desconsidera a regularização.
 lambda = 0;
 
 J = cost_function(nn_params, input_layer_size, hidden_layer_size, ...
                    num_labels, X, y, lambda);
 
 fprintf(['Custo calculado considerado os valores salvos em ex5weights: %f '...
-         '\n(O valor correto deve ser prÃ³ximo de 0.287629)\n'], J);
+         '\n(O valor correto deve ser próximo de 0.287629)\n'], J);
 
 fprintf('Programa parado. Digite enter para continuar.\n');
 pause;
 
-%% =============== Parte 2b: Testando implementaÃ§Ã£o da funÃ§Ã£o custo (com regularizacao) ===============
+%% =============== Parte 2b: Testando implementação da função custo (com regularizacao) ===============
 %  
 
-fprintf('\nFunÃ§Ã£o de custo (com regularizaÃ§Ã£o)...\n')
+fprintf('\nFunção de custo (com regularização)...\n')
 
 lambda = 1;
 
@@ -108,7 +108,7 @@ J = cost_function(nn_params, input_layer_size, hidden_layer_size, ...
                    num_labels, X, y, lambda);
 
 fprintf(['Custo calculado considerado os valores salvos em ex5weights: %f '...
-         '\n(O valor correto deve ser prÃ³ximo de 0.383770)\n'], J);
+         '\n(O valor correto deve ser próximo de 0.383770)\n'], J);
 
 fprintf('Programa parado. Digite enter para continuar.\n');
 pause;
@@ -116,10 +116,10 @@ pause;
 
 
 
-%% =============== Parte 2c: Testando implementaÃ§Ã£o do Backpropagation (sem regularizaÃ§Ã£o)===============
+%% =============== Parte 2c: Testando implementação do Backpropagation (sem regularização)===============
 %  
 %
-fprintf('\nTestando Backpropagation (sem RegularizaÃ§Ã£o) ... \n')
+fprintf('\nTestando Backpropagation (sem Regularização) ... \n')
 
 lambda = 0;
 checkNNGradients;
@@ -128,11 +128,11 @@ fprintf('Programa parado. Digite enter para continuar.\n');
 pause;
 
 
-%% =============== Parte 2d: Testando implementaÃ§Ã£o do Backpropagation (com regularizaÃ§Ã£o)= ===============
+%% =============== Parte 2d: Testando implementação do Backpropagation (com regularização)= ===============
 %  
 %
 
-fprintf('\nTestando Backpropagation (com RegularizaÃ§Ã£o) ... \n')
+fprintf('\nTestando Backpropagation (com Regularização) ... \n')
 
 lambda = 3;
 checkNNGradients(lambda);
@@ -142,7 +142,4 @@ debug_J  = cost_function(nn_params, input_layer_size, ...
                           hidden_layer_size, num_labels, X, y, lambda);
 
 fprintf(['\n\nCusto: %f ' ...
-         '\n(O valor correto deve ser prÃ³ximo de 0.576051)\n\n'], debug_J);
-
-
-
+         '\n(O valor correto deve ser próximo de 0.576051)\n\n'], debug_J);
