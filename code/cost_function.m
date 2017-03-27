@@ -38,10 +38,7 @@ end
 
 % H é a função hypotehsis calculada em cada exemplo de X
 % dim(H) = dim(Y)
-H = zeros(m, num_labels);
-for i=1:m
-    H(i, :) = hyp(Theta1, Theta2, X(i, :));
-end
+H = hyp(Theta1, Theta2, X)';
 
 M = -(Y.*log(H)) - (1 - Y).*log(1 - H);
 
@@ -58,19 +55,19 @@ J = J + (lambda/(2*m))*(sum(sum(Theta1(:, 2:end).^2)) + ...
 % === Cálculo de grad(J): Algoritmo Backpropagation ===
 % =====================================================
 
-for i=1:m,
-    
-    x = X(i, :);            % entrada da camada 1 (x)
-    a1 = [1 ; x'];          % saída da camada 1 + bias 1
-    z2 = Theta1*a1;         % entrada da camada intermediária 2
-    a2 = [1 ; sigmoid(z2)]; % saída da camada intermediária + bias 1
-    z3 = Theta2*a2;         % entrada da camada de saída 3
-    a3 = sigmoid(z3);       % saída da camada de saída = h
-    
-    gamma3 = a3 - Y(i, :);
-    gamma2 = ((Theta2')*gamma3).*sigmoidGradient(z2);
-    
-end
+%for i=1:m,
+%    
+%    x = X(i, :);            % entrada da camada 1 (x)
+%    a1 = [1 ; x'];          % saída da camada 1 + bias 1
+%    z2 = Theta1*a1;         % entrada da camada intermediária 2
+%    a2 = [1 ; sigmoid(z2)]; % saída da camada intermediária + bias 1
+%    z3 = Theta2*a2;         % entrada da camada de saída 3
+%    a3 = sigmoid(z3);       % saída da camada de saída = h
+%    
+%    gamma3 = a3 - Y(i, :);
+%    gamma2 = ((Theta2')*gamma3).*sigmoidGradient(z2);
+%    
+%end
 
 % Não altere esta linha!!
 grad = [Theta1_grad(:) ; Theta2_grad(:)];

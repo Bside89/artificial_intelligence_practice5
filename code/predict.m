@@ -5,17 +5,18 @@ function p = predict(Theta1, Theta2, X)
 %   cada amostra do conjunto X.
 
 % Variaveis úteis
-m = size(X, 1);
-num_classes = size(Theta2, 1);
+%m = size(X, 1);
+%num_classes = size(Theta2, 1);
 
 % Você deve preencher o seguinte vetor corretamente com a classe de cada
 % amostra
-p = zeros(m, 1);
+%p = zeros(m, 1);
 
-for i=1:m,
-    % Utiliza o valor com maior probabilidade de ser 1
-    % Note que isto é o mesmo que calcular max(a3)
-    [~, p(i)] = max(hyp(Theta1, Theta2, X(i, :)));                
-end
+% Utiliza o valor com maior probabilidade de ser 1
+% Note que isto é o mesmo que calcular max(a3)
+
+[~, p] = max(hyp(Theta1, Theta2, X), [], 1);
+
+p = p';
 
 end
