@@ -1,5 +1,5 @@
 function p = predict(Theta1, Theta2, X)
-%PREDICT classica um conjunto de amostras utilizando os parâmetros da 
+%PREDICT classifica um conjunto de amostras utilizando os parâmetros da 
 %rede (Theta1 e Theta2)
 %   p = PREDICT(Theta1, Theta2, X) devolve um vetor com a classse de 
 %   cada amostra do conjunto X.
@@ -12,8 +12,10 @@ num_classes = size(Theta2, 1);
 % amostra
 p = zeros(m, 1);
 
-
-
-
+for i=1:m,
+    % Utiliza o valor com maior probabilidade de ser 1
+    % Note que isto é o mesmo que calcular max(a3)
+    [~, p(i)] = max(hyp(Theta1, Theta2, X(i, :)));                
+end
 
 end

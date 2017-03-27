@@ -16,9 +16,9 @@ clear ; close all; clc
 
 %% Parametros da rede
 input_layer_size  = 400;  % imagens de 20x20 
-hidden_layer_size = 25;   % 25 unidades na camada intermediÃ¡ria
+hidden_layer_size = 25;   % 25 unidades na camada intermediária
 num_labels = 10;          % 10 classe, de 1 a 10
-                          % (note que o digito "0" foi mapeado para a classe 10)
+                          % (note que o dígito "0" foi mapeado para a classe 10)
 
 %% =========== Carregando e Visualisando os Dados  =============
 
