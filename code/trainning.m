@@ -34,10 +34,10 @@ m = size(X, 1);
 fprintf('\nTreinando a rede neural... \n')
 
 
-options = optimset('MaxIter', 50);
+options = optimset('MaxIter', 100);
 
 %  should also try different values of lambda
-lambda = 1;
+lambda = 2;
 
 initial_Theta1 = randInitializeWeights(input_layer_size, hidden_layer_size);
 initial_Theta2 = randInitializeWeights(hidden_layer_size, num_labels);

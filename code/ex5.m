@@ -14,6 +14,8 @@
 
 clear ; close all; clc
 
+debug = 0; % Para mostrar ou não os resultados da classificação das imagens
+
 %% Parametros da rede
 input_layer_size  = 400;  % imagens de 20x20 
 hidden_layer_size = 25;   % 25 unidades na camada intermediária
@@ -65,17 +67,19 @@ pause;
 %  Randomly permute examples
 rp = randperm(m);
 
-for i = 1:10
-    % Display
-    fprintf('\nMostrando Imagem\n');
-    displayData(X(rp(i), :));
+if debug == 1,
+    for i = 1:10
+        % Display
+        fprintf('\nMostrando Imagem\n');
+        displayData(X(rp(i), :));
 
-    pred = predict(Theta1, Theta2, X(rp(i),:));
-    fprintf('\nEsta imagem foi classificada como: %d (dígito %d)\n', pred, mod(pred, 10));
+        pred = predict(Theta1, Theta2, X(rp(i),:));
+        fprintf('\nEsta imagem foi classificada como: %d (dígito %d)\n', pred, mod(pred, 10));
 
-    % Pause
-	fprintf('Programa parado. Digite enter para continuar.\n');
-    pause;
+        % Pause
+        fprintf('Programa parado. Digite enter para continuar.\n');
+        pause;
+    end
 end
 
 

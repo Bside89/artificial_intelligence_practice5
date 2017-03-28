@@ -19,9 +19,9 @@ Theta2 = reshape(nn_params((1 + (hidden_layer_size * (input_layer_size + 1))):en
 m = size(X, 1);
 
 % Você deve preencher as seguintes variáveis corretamente
-%J = 0;
-Theta1_grad = zeros(size(Theta1)); % gradiente de Theta1
-Theta2_grad = zeros(size(Theta2)); % gradiente de Theta2
+% J = 0;
+% Theta1_grad = zeros(size(Theta1)); % gradiente de Theta1
+% Theta2_grad = zeros(size(Theta2)); % gradiente de Theta2
 
 % Mudança de representação de y para um vetor Y
 I = eye(num_labels);
@@ -30,7 +30,7 @@ for i=1:m
     Y(i, :)= I(y(i), :);
 end
 
-% =============== Sua implementação deve ser vir aqui ==================
+% =============== Sua implementação deve vir aqui ==================
 
 % ==========================
 % === Cálculo do custo J ===
@@ -38,36 +38,50 @@ end
 
 % H é a função hypotehsis calculada em cada exemplo de X
 % dim(H) = dim(Y)
-H = hyp(Theta1, Theta2, X)';
+H = hyp(Theta1, Theta2, X);
 
-M = -(Y.*log(H)) - (1 - Y).*log(1 - H);
-
-J = sum(sum(M))/m;
+J = sum(sum(-(Y.*log(H)) - (1 - Y).*log(1 - H)))/m;
 
 % ==========================
 % === Regularização de J ===
 % ==========================
 
-J = J + (lambda/(2*m))*(sum(sum(Theta1(:, 2:end).^2)) + ...
-                        sum(sum(Theta2(:, 2:end).^2)));
-                    
+if lambda ~= 0,
+    J = J + (lambda/(2*m))*(sum(sum(Theta1(:, 2:end).^2)) + ...
+                            sum(sum(Theta2(:, 2:end).^2)));
+end
+
 % =====================================================
 % === Cálculo de grad(J): Algoritmo Backpropagation ===
 % =====================================================
 
-%for i=1:m,
-%    
-%    x = X(i, :);            % entrada da camada 1 (x)
-%    a1 = [1 ; x'];          % saída da camada 1 + bias 1
-%    z2 = Theta1*a1;         % entrada da camada intermediária 2
-%    a2 = [1 ; sigmoid(z2)]; % saída da camada intermediária + bias 1
-%    z3 = Theta2*a2;         % entrada da camada de saída 3
-%    a3 = sigmoid(z3);       % saída da camada de saída = h
-%    
-%    gamma3 = a3 - Y(i, :);
-%    gamma2 = ((Theta2')*gamma3).*sigmoidGradient(z2);
-%    
-%end
+[A3, A2, A1, ~, Z2] = hyp(Theta1, Theta2, X);
+
+G3 = (A3 - Y)'; % Gamma 3
+
+T = (Theta2')*G3; % Matriz temporária (descarta a primeira coluna de G2)
+
+G2 = (T(2:end, :)).*(sigmoidGradient(Z2)'); % Gamma 2
+
+Theta1_grad = (1/m)*(G2*A1); % Delta 1 (média)
+
+Theta2_grad = (1/m)*(G3*A2); % Delta 2 (média)
+
+% ================================
+% === Regularização do grad(J) ===
+% ================================
+
+if lambda ~= 0,
+    R1 = (lambda/m)*Theta1;
+    R2 = (lambda/m)*Theta2;
+    R1(:, 1) = zeros(size(R1, 1), 1);
+    R2(:, 1) = zeros(size(R2, 1), 1);
+
+    Theta1_grad = Theta1_grad + R1;
+    Theta2_grad = Theta2_grad + R2;
+end
+
+% ==================================================================
 
 % Não altere esta linha!!
 grad = [Theta1_grad(:) ; Theta2_grad(:)];
