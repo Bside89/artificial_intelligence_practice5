@@ -15,6 +15,8 @@ function p = predict(Theta1, Theta2, X)
 % Utiliza o valor com maior probabilidade de ser 1
 % Note que isto é o mesmo que calcular max(a3)
 
-[~, p] = max(hyp(Theta1, Theta2, X), [], 2);
+[~, p] = max(hyp(Theta1, Theta2, X), [], 1);
+
+p = p';
 
 end

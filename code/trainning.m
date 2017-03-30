@@ -4,18 +4,24 @@
 %
 % Script Octave/MATLAB que deve ser utilizado para treinar a rede neural
 %
-% Você DEVE alterar os valores da variável lambda (linha 40)
+% Você DEVE alterar os valores da variável lambda (linha 17)
 % 
 %  
 %
 
 clear ; close all; clc
 
-%% Parametros da rede
-input_layer_size  = 400;  % imagens de 20x20 
-hidden_layer_size = 25;   % 25 unidades na camada intermediária
-num_labels = 10;          % 10 classe, de 1 a 10
-                          % (note que o dígito "0" foi mapeado para a classe 10)
+%% Parâmetros de ajuste do script
+
+max_iter = 100;
+lambda = 4;                 % Should also try different values of lambda
+
+
+%% Parâmetros da rede
+input_layer_size  = 400;    % imagens de 20x20 
+hidden_layer_size = 25;     % 25 unidades na camada intermediária
+num_labels = 10;            % 10 classe, de 1 a 10
+                            % (note que o dígito "0" foi mapeado para a classe 10)
 
 %% =========== Carregando os Dados  =============
 
@@ -26,18 +32,12 @@ load('ex5data.mat');
 m = size(X, 1);
 
 
-
-
 %% =================== Treinando a rede neural ===================
 %  
 %
 fprintf('\nTreinando a rede neural... \n')
 
-
-options = optimset('MaxIter', 100);
-
-%  should also try different values of lambda
-lambda = 2;
+options = optimset('MaxIter', max_iter);
 
 initial_Theta1 = randInitializeWeights(input_layer_size, hidden_layer_size);
 initial_Theta2 = randInitializeWeights(hidden_layer_size, num_labels);

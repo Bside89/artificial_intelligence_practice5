@@ -38,7 +38,7 @@ end
 
 % H é a função hypotehsis calculada em cada exemplo de X
 % dim(H) = dim(Y)
-H = hyp(Theta1, Theta2, X);
+H = hyp(Theta1, Theta2, X)';
 
 J = sum(sum(-(Y.*log(H)) - (1 - Y).*log(1 - H)))/m;
 
@@ -57,15 +57,15 @@ end
 
 [A3, A2, A1, ~, Z2] = hyp(Theta1, Theta2, X);
 
-G3 = (A3 - Y)'; % Gamma 3
+G3 = A3 - Y'; % Gamma 3
 
 T = (Theta2')*G3; % Matriz temporária (descarta a primeira coluna de G2)
+T = T(2:end, :);
 
-G2 = (T(2:end, :)).*(sigmoidGradient(Z2)'); % Gamma 2
+G2 = T.*sigmoidGradient(Z2); % Gamma 2
 
-Theta1_grad = (1/m)*(G2*A1); % Delta 1 (média)
-
-Theta2_grad = (1/m)*(G3*A2); % Delta 2 (média)
+Theta1_grad = (1/m)*(G2*A1'); % Delta 1 (média)
+Theta2_grad = (1/m)*(G3*A2'); % Delta 2 (média)
 
 % ================================
 % === Regularização do grad(J) ===

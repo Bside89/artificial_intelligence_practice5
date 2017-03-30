@@ -21,11 +21,4 @@ Z3 = Theta2*A2;
 % Camada de saída = h
 A3 = sigmoid(Z3);
 
-A3 = A3';
-A2 = A2';
-A1 = A1';
-Z3 = Z3';
-Z2 = Z2';
-
 end
-
