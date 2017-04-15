@@ -74,8 +74,8 @@ Theta2_grad = (1/m)*(G3*A2'); % Delta 2 (média)
 if lambda ~= 0,
     R1 = (lambda/m)*Theta1;
     R2 = (lambda/m)*Theta2;
-    R1(:, 1) = zeros(size(R1, 1), 1);
-    R2(:, 1) = zeros(size(R2, 1), 1);
+    R1(:, 1) = zeros(size(R1, 1), 1); % Descarta a regularização do viés
+    R2(:, 1) = zeros(size(R2, 1), 1); % Descarta a regularização do viés
 
     Theta1_grad = Theta1_grad + R1;
     Theta2_grad = Theta2_grad + R2;

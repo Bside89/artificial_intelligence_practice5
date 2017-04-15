@@ -14,7 +14,7 @@
 
 clear ; close all; clc
 
-debug = 0; % Para mostrar ou não os resultados da classificação das imagens
+debug = 1; % Para mostrar ou não os resultados da classificação das imagens
 
 %% Parametros da rede
 input_layer_size  = 400;  % imagens de 20x20 
@@ -22,10 +22,10 @@ hidden_layer_size = 25;   % 25 unidades na camada intermediária
 num_labels = 10;          % 10 classe, de 1 a 10
                           % (note que o dígito "0" foi mapeado para a classe 10)
 
-%% =========== Carregando e Visualisando os Dados  =============
+%% =========== Carregando e Visualizando os Dados  =============
 
 
-fprintf('Carregando e Visualisando os Dados ...\n')
+fprintf('Carregando e Visualizando os Dados ...\n')
 
 load('ex5data.mat');
 m = size(X, 1);

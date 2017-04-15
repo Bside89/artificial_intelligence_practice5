@@ -25,7 +25,6 @@ num_labels = 10;            % 10 classe, de 1 a 10
 
 %% =========== Carregando os Dados  =============
 
-
 fprintf('Carregando os Dados ...\n')
 
 load('ex5data.mat');

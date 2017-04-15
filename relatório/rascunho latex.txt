@@ -1,0 +1,41 @@
+\begin{align*}
+J(\Theta^{(1)}, \Theta^{(2)}) = \frac{1}{m} \sum_{i=1}^{m} \sum_{k=1}^{K} \left( -y_i^k \log(h_{\Theta}(x_i)_k) - (1 - y_i^k) \log(1 - h_{\Theta}(x_i)_k) \right) \\ 
++ \frac{\lambda}{2m} \left( \sum_{i=1}^{25} \sum_{j=1}^{400} (\theta_{i, j}^{(1)})^2 + \sum_{i=1}^{10} \sum_{j=1}^{25} (\theta_{i, j}^{(2)})^2 \right)
+\end{align*}
+
+
+
+A^{(1)} = X = \begin{pmatrix}
+1 & 1 & \cdots & 1 \\ 
+x_{11}^{(l)} & x_{12}^{(l)} & \cdots & x_{1m}^{(l)}\\ 
+\vdots & \vdots & \ddots & \vdots\\ 
+x_{n1}^{(l)} & x_{n2}^{(l)} & \cdots & x_{nm}^{(l)}
+\end{pmatrix}, X \in \mathbb{R}^{n \times m}
+
+
+
+({\Theta}^{(l)})^{\top}A^{(l)} = \begin{pmatrix}
+1 & \theta_{01}^{(l)} & \cdots & \theta_{0n}^{(l)} \\ 
+0 & \theta_{11}^{(l)} & \cdots & \theta_{1n}^{(l)}\\ 
+\vdots & \vdots & \ddots & \vdots\\ 
+0 & \theta_{m1}^{(l)} & \cdots & \theta_{mn}^{(l)}
+\end{pmatrix}
+
+\begin{pmatrix}
+1 & 1 & \cdots & 1 \\ 
+a_{10}^{(l)} & a_{11}^{(l)} & \cdots & a_{1m}^{(l)}\\ 
+\vdots & \vdots & \ddots & \vdots\\ 
+a_{n0}^{(l)} & a_{n1}^{(l)} & \cdots & a_{nm}^{(l)}
+\end{pmatrix}
+
+
+
+A^{(2)} = g\left((\Theta^{(1)})^{\top}A^{(1)}\right ) = g\left((\Theta^{(1)})^{\top}X\right )
+
+
+
+g(Z) = \left \{ \frac{1}{1 + e^{-z_{ij}}} \right \}_{ij}, \forall z_{ij} \in Z
+
+
+
+J(\Theta) = \frac{1}{m} \sum_{i=1}^{m} \sum_{k=1}^{K} \left[ -y_i^k \log(h_{\Theta}(x_i)_k) - (1 - y_i^k) \log(1 - h_{\Theta}(x_i)_k) \right ]
