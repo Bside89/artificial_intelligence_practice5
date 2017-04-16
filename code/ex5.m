@@ -14,7 +14,7 @@
 
 clear ; close all; clc
 
-debug = 1; % Para mostrar ou não os resultados da classificação das imagens
+debug = 0; % Para mostrar ou não os resultados da classificação das imagens
 
 %% Parametros da rede
 input_layer_size  = 400;  % imagens de 20x20 
