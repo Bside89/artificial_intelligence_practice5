@@ -1,30 +1,31 @@
 % Universidade Federal de Mato Grosso
 % Instituto de Engenharia
-% InteligÍncia Artificial - 2016/2
+% Intelig√™ncia Artificial - 2016/2
 %
-% Script Octave/MATLAB que deve ser utilizado para testar a implementaÁ„o 
-% do exercÌcio.
-% Este arquivo n„o deve ser  alterado.
+% Script Octave/MATLAB que deve ser utilizado para testar a implementa√ß√£o 
+% do exerc√≠cio.
+% Este arquivo n√¢o deve ser alterado.
 %
-% VocÍ deve alterar apenas os arquivos: 
+% Voc√™ deve alterar apenas os arquivos: 
 % 
 %     predict.m
 %     cost_function.m
 %
 
-clear ; close all; clc
+clear; close all; clc;
 
-debug = 0; % Para mostrar ou n„o os resultados da classificaÁ„o das imagens
+debug = 0; % Para mostrar ou n√¢o os resultados da classifica√ß√£o das imagens
 
-%% Parametros da rede
+%% Par√¢metros da rede
 input_layer_size  = 400;  % imagens de 20x20 
-hidden_layer_size = 25;   % 25 unidades na camada intermedi·ria
+hidden_layer_size = 25;   % 25 unidades na camada intermediÔøΩria
 num_labels = 10;          % 10 classe, de 1 a 10
-                          % (note que o dÌgito "0" foi mapeado para a classe 10)
+                          % (note que o d√≠gito "0" foi mapeado para a classe 10)
 
-%% =========== Carregando e Visualizando os Dados  =============
-
-
+                          
+%% ==================== Carregando e visualizando os dados =====================
+%
+%
 fprintf('Carregando e Visualizando os Dados ...\n')
 
 load('ex5data.mat');
@@ -40,31 +41,30 @@ fprintf('Programa parado. Digite enter para continuar.\n');
 pause;
 
 
-%% ================ Carregando Par‚metros ================
-
-
-fprintf('\nCarregando par‚metros salvos ...\n')
+%% =========================== Carregando par√¢metros ===========================
+%
+%
+fprintf('\nCarregando par√¢metros salvos ...\n')
 
 load('ex5weights.mat');
 
 nn_params = [Theta1(:) ; Theta2(:)];
 
 
-%% ============= Parte 1: Testando a implementaÁ„o da classificaÁ„o =============
+%% === Parte 1: Testando a implementa√ß√£o da classifica√ß√£o ======================
 %  
 %  
-
 pred = predict(Theta1, Theta2, X);
 
-fprintf('\nAcur·cia do treinamento: %f\n', mean(double(pred == y)) * 100);
+fprintf('\nAcur√°cia do treinamento: %f\n', mean(double(pred == y)) * 100);
 
 fprintf('Programa parado. Digite enter para continuar.\n');
 pause;
 
 
-% Veja  10 exemplos aleatorios
+% Veja 10 exemplos aleatorios
 
-%  Randomly permute examples
+% Randomly permute examples
 rp = randperm(m);
 
 if debug == 1,
@@ -74,7 +74,8 @@ if debug == 1,
         displayData(X(rp(i), :));
 
         pred = predict(Theta1, Theta2, X(rp(i),:));
-        fprintf('\nEsta imagem foi classificada como: %d (dÌgito %d)\n', pred, mod(pred, 10));
+        fprintf('\nEsta imagem foi classificada como: %d (d√≠gito %d)\n', ...
+                pred, mod(pred, 10));
 
         % Pause
         fprintf('Programa parado. Digite enter para continuar.\n');
@@ -83,28 +84,26 @@ if debug == 1,
 end
 
 
-
-%% ======= Parte 2a: Testando implementaÁ„o da funÁ„o custo (sem regularizacao) =======
+%% === Parte 2a: Testando implementa√ß√£o da fun√ß√£o custo (sem regulariza√ß√£o) ====
 %  
 %
-fprintf('\nFunÁ„o de custo (sem regularizaÁ„o)...\n')
+fprintf('\nFun√ß√£o de custo (sem regulariza√ß√£o)...\n')
 
-% desconsidera a regularizaÁ„o.
-lambda = 0;
+lambda = 0; % Desconsidera a regulariza√ß√£o
 
 J = cost_function(nn_params, input_layer_size, hidden_layer_size, ...
                    num_labels, X, y, lambda);
 
 fprintf(['Custo calculado considerado os valores salvos em ex5weights: %f '...
-         '\n(O valor correto deve ser prÛximo de 0.287629)\n'], J);
+         '\n(O valor correto deve ser pr√≥ximo de 0.287629)\n'], J);
 
 fprintf('Programa parado. Digite enter para continuar.\n');
 pause;
 
-%% =============== Parte 2b: Testando implementaÁ„o da funÁ„o custo (com regularizacao) ===============
+%% === Parte 2b: Testando implementa√ß√£o da fun√ß√£o custo (com regularizacao) ====
 %  
-
-fprintf('\nFunÁ„o de custo (com regularizaÁ„o)...\n')
+%
+fprintf('\nFun√ß√£o de custo (com regulariza√ß√£o)...\n')
 
 lambda = 1;
 
@@ -112,18 +111,16 @@ J = cost_function(nn_params, input_layer_size, hidden_layer_size, ...
                    num_labels, X, y, lambda);
 
 fprintf(['Custo calculado considerado os valores salvos em ex5weights: %f '...
-         '\n(O valor correto deve ser prÛximo de 0.383770)\n'], J);
+         '\n(O valor correto deve ser pr√≥ximo de 0.383770)\n'], J);
 
 fprintf('Programa parado. Digite enter para continuar.\n');
 pause;
 
 
-
-
-%% =============== Parte 2c: Testando implementaÁ„o do Backpropagation (sem regularizaÁ„o)===============
+%% == Parte 2c: Testando implementa√ß√£o do Backpropagation (sem regulariza√ß√£o) ==
 %  
 %
-fprintf('\nTestando Backpropagation (sem RegularizaÁ„o) ... \n')
+fprintf('\nTestando Backpropagation (sem Regulariza√ß√£o) ... \n')
 
 lambda = 0;
 checkNNGradients;
@@ -132,11 +129,10 @@ fprintf('Programa parado. Digite enter para continuar.\n');
 pause;
 
 
-%% =============== Parte 2d: Testando implementaÁ„o do Backpropagation (com regularizaÁ„o)= ===============
+%% == Parte 2d: Testando implementa√ß√£o do Backpropagation (com regulariza√ß√£o) ==
 %  
 %
-
-fprintf('\nTestando Backpropagation (com RegularizaÁ„o) ... \n')
+fprintf('\nTestando Backpropagation (com Regulariza√ß√£o) ... \n')
 
 lambda = 3;
 checkNNGradients(lambda);
@@ -146,4 +142,4 @@ debug_J  = cost_function(nn_params, input_layer_size, ...
                           hidden_layer_size, num_labels, X, y, lambda);
 
 fprintf(['\n\nCusto: %f ' ...
-         '\n(O valor correto deve ser prÛximo de 0.576051)\n\n'], debug_J);
+         '\n(O valor correto deve ser pr√≥ximo de 0.576051)\n\n'], debug_J);

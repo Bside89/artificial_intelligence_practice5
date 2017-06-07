@@ -1,43 +1,55 @@
 % Universidade Federal de Mato Grosso
 % Instituto de Engenharia
-% InteligÍncia Artificial - 2016/2
+% Intelig√™ncia Artificial - 2016/2
 %
 % Script Octave/MATLAB que deve ser utilizado para testar diferentes
-% valores de lambda e avaliar as respectivas acur·cias.
+% valores de lambda e avaliar as respectivas acur√°cias.
 % 
 
-clear ; close all; clc;
+clear; close all; clc;
 
-%% Par‚metros de ajuste do script
+if is_octave(), # Carrega os pacotes necess√°rios
+    pkg load statistics;
+end
 
-max_iter = 50;             % N˙mero de iteraÁıes (fmincg)
-k = 3;                      % Par‚metro k na validaÁ„o cruzada
+%% Par√¢metros de ajuste do script
+
+max_iter = 50;              % N√∫mero de itera√ß√µes (fmincg)
+k = 3;                      % Par√¢metro k na valida√ß√£o cruzada
 
 % Amostra contendo valores de lambda
 lambda = [0 10^(-6) 1 2 3 4 10 10^3 10^6];
 
-%% Par‚metros da rede
+%% Par√¢metros da rede
 input_layer_size  = 400;    % imagens de 20x20 
-hidden_layer_size = 25;     % 25 unidades na camada intermedi·ria
-num_labels = 10;            % 10 classe, de 1 a 10
-                            % (note que o dÌgito "0" foi mapeado para a classe 10)
+hidden_layer_size = 25;     % 25 unidades na camada intermedi√°ria
+num_labels = 10;            % 10 classe, de 1 a 10 (note que o d√≠gito "0" foi 
+                            % mapeado para a classe 10)
 
-%% =========== Carregando os Dados  =============
 
-fprintf('Carregando os Dados ...\n')
+%% ============================ Carregando os dados ============================
+%
+%
+fprintf('Carregando os dados ...\n')
 
 load('ex5data.mat');
 m = size(X, 1);
 
-%% =================== Treinando e testando rede neural ===================
-%
-%
 
+%% ===================== Treinando e testando rede neural ======================
+%
+%
 ml = size(lambda, 2);
 
 options = optimset('MaxIter', max_iter);
 
-c = cvpartition(y, 'k', k);
+if isOctave,
+    optcv = 'KFold';
+else
+    optcv = 'k';
+end
+
+c = cvpartition(y, optcv, k);
 
 k_acc = zeros(ml, k);
 
@@ -46,11 +58,10 @@ list_costs = cell(ml, k);
 accuracy = zeros(1, ml);
 
 for i=1:ml,
+    
     for j=1:k,
-
-        % =========================
-        % === Treinamento da NN ===
-        % =========================
+        
+        % Treinamento da NN
 
         fprintf('\nTreinando a rede neural... \n');
         fprintf('K-fold CV: k = %i\n', j);
@@ -61,12 +72,20 @@ for i=1:ml,
 
         initial_nn_params = [initial_Theta1(:) ; initial_Theta2(:)];
 
+        if isOctave,
+            idx1 = training(c, j);
+            idx2 = test(c, j);
+        else
+            idx1 = c.training(j);
+            idx2 = c.test(j);
+        end
+        
         costFunction = @(p) cost_function(p, ...
             input_layer_size, ...
             hidden_layer_size, ...
-            num_labels, X(c.training(j), :), y(c.training(j)), lambda(i));
+            num_labels, X(idx1, :), y(idx1), lambda(i));
 
-        % FunÁ„o de otimizaÁ„o
+        % Fun√ß√£o de otimiza√ß√£o
         [nn_params, cost] = fmincg(costFunction, initial_nn_params, options);
 
         Theta1 = reshape(nn_params(1:hidden_layer_size * (input_layer_size + 1)), ...
@@ -77,26 +96,24 @@ for i=1:ml,
 
         list_costs{i, j} = cost; % Armazena o custo numa lista de matrizes
         
-        % =======================
-        % === AvaliaÁ„o da NN ===
-        % =======================
-
-        pred = predict(Theta1, Theta2, X(c.test(j), :));
+        % Avalia√ß√£o da NN
+        
+        pred = predict(Theta1, Theta2, X(idx2, :));
 
         fprintf('\nTestando a rede neural... \n');
         fprintf('\nk: %4i | ', j);
-        k_acc(i, j) = mean(double(pred == y(c.test(j)))) * 100;
-        fprintf('Acur·cia: %f\n', k_acc(i, j));
+        k_acc(i, j) = mean(double(pred == y(idx2))) * 100;
+        fprintf('Acur√°cia: %f\n', k_acc(i, j));
 
     end
     
     accuracy(i) = mean(k_acc(i, :));
-    fprintf('\nAcur·cia mÈdia final do modelo (p/ lambda = %f): %f\n', ...
+    fprintf('\nAcur√°cia m√©dia final do modelo (p/ lambda = %f): %f\n', ...
         lambda(i), accuracy(i));
     
 end
 
-% CorreÁ„o do early-stop da fmincg, ajustando as dimensıes das matrizes de
+% Corre√ß√£o do early-stop da fmincg, ajustando as dimens√µes das matrizes de
 % custo
 for i=1:ml,
     for j=1:k,
@@ -106,23 +123,25 @@ for i=1:ml,
     end
 end
     
-if k == 3, % PrÈ-definido para este experimento
+if k == 3, % Pr√©-definido para este experimento
     f = figure;
     for i=1:ml,
         v = [list_costs{i, 1} list_costs{i, 2} list_costs{i, 3}];
         cost = mean(v, 2);
         x = 1:size(cost, 1);
         p = plot(x, cost);
-        p(1).LineWidth = 1.2;
+        if ~isOctave, p(1).LineWidth = 1.2; end
         hold on;
     end
-    title('Progresso da otimizaÁ„o do custo em fmincg');
-    xlabel('IteraÁ„o');
+    title('Progresso da otimiza√ß√£o do custo em fmincg');
+    xlabel('Itera√ß√£o');
     ylabel('Custo');
-    hleg = legend(  'lambda = 0', 'lambda = 1e?06', ...
+    hleg = legend(  'lambda = 0', 'lambda = 1e-06', ...
                     'lambda = 1', 'lambda = 2', ...
                     'lambda = 3', 'lambda = 4', ...
                     'lambda = 10', 'lambda = 1e+03', ...
                     'lambda = 1e+06');
-    set(hleg,'Location','best');
+    if ~isOctave,
+        set(hleg,'Location','best');
+    end
 end

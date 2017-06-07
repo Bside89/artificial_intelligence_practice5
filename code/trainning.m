@@ -1,40 +1,42 @@
 % Universidade Federal de Mato Grosso
 % Instituto de Engenharia
-% Inteligência Artificial - 2016/2
+% InteligÃªncia Artificial - 2016/2
 %
 % Script Octave/MATLAB que deve ser utilizado para treinar a rede neural
 %
-% Você DEVE alterar os valores da variável lambda (linha 17)
+% VocÃª DEVE alterar os valores da variÃ¡vel lambda (linha 17)
 % 
 %  
 %
 
-clear ; close all; clc
+clear; close all; clc;
 
-%% Parâmetros de ajuste do script
+%% ParÃ¢metros de ajuste do script
 
 max_iter = 100;
 lambda = 4;                 % Should also try different values of lambda
 
 
-%% Parâmetros da rede
+%% Parï¿½metros da rede
 input_layer_size  = 400;    % imagens de 20x20 
-hidden_layer_size = 25;     % 25 unidades na camada intermediária
-num_labels = 10;            % 10 classe, de 1 a 10
-                            % (note que o dígito "0" foi mapeado para a classe 10)
+hidden_layer_size = 25;     % 25 unidades na camada intermediÃ¡ria
+num_labels = 10;            % 10 classe, de 1 a 10 (note que o dÃ­gito "0" foi 
+                            % mapeado para a classe 10)
 
-%% =========== Carregando os Dados  =============
-
-fprintf('Carregando os Dados ...\n')
+                            
+%% ============================ Carregando os dados ============================
+%
+%
+fprintf('Carregando os dados...\n')
 
 load('ex5data.mat');
 m = size(X, 1);
 
 
-%% =================== Treinando a rede neural ===================
+%% ========================== Treinando a rede neural ==========================
 %  
 %
-fprintf('\nTreinando a rede neural... \n')
+fprintf('\nTreinando a rede neural...\n')
 
 options = optimset('MaxIter', max_iter);
 
@@ -50,7 +52,7 @@ costFunction = @(p) cost_function(p, ...
                                    hidden_layer_size, ...
                                    num_labels, X, y, lambda);
 
-% Função de otimização
+% FunÃ§Ã£o de otimizaÃ§Ã£o
 [nn_params, cost] = fmincg(costFunction, initial_nn_params, options);
 
 Theta1 = reshape(nn_params(1:hidden_layer_size * (input_layer_size + 1)), ...

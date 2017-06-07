@@ -1,6 +1,6 @@
 function g = sigmoidGradient(z)
-%SIGMOIDGRADIENT devolve o gradiente da função sigmoid no ponto z
-% z pode ser uma matriz, um vetor ou um número real
+%SIGMOIDGRADIENT devolve o gradiente da funÃ§Ã£o sigmoid no ponto z
+% z pode ser uma matriz, um vetor ou um nÃºmero real
 
 s = sigmoid(z);
 

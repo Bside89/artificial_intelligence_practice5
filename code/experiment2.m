@@ -1,39 +1,48 @@
 % Universidade Federal de Mato Grosso
 % Instituto de Engenharia
-% InteligÍncia Artificial - 2016/2
+% Intelig√™ncia Artificial - 2016/2
 %
-% Script Octave/MATLAB que deve ser utilizado para avaliar a acur·cia da
-% rede neural utilizando validaÁ„o cruzada k-fold.
+% Script Octave/MATLAB que deve ser utilizado para avaliar a acur√°cia da
+% rede neural utilizando valida√ß√£o cruzada k-fold.
 % 
 
-clear ; close all; clc;
+clear; close all; clc;
 
-%% Par‚metros de ajuste do script
+if is_octave(), # Carrega os pacotes necess√°rios
+    pkg load statistics;
+end
 
-max_iter = 500;
+%% Par√¢metros de ajuste do script
+
+max_iter = 50;
 lambda = 3;                 % Should also try different values of lambda
-k = 3;                      % Par‚metro k na validaÁ„o cruzada
+k = 3;                      % Par√¢metro k na valida√ß√£o cruzada
 
-%% Par‚metros da rede
+%% Par√¢metros da rede
 input_layer_size  = 400;    % imagens de 20x20 
-hidden_layer_size = 25;     % 25 unidades na camada intermedi·ria
-num_labels = 10;            % 10 classe, de 1 a 10
-                            % (note que o dÌgito "0" foi mapeado para a classe 10)
+hidden_layer_size = 25;     % 25 unidades na camada intermedi√°ria
+num_labels = 10;            % 10 classe, de 1 a 10 (note que o d√≠gito "0" foi 
+                            % mapeado para a classe 10)
 
-%% =========== Carregando os Dados  =============
+%% === Carregando os dados =====================================================
 
 fprintf('Carregando os Dados ...\n')
 
 load('ex5data.mat');
 m = size(X, 1);
 
-%% =================== Treinando e testando rede neural ===================
+%% === Treinando e testando rede neural ========================================
 %
 %
-
 options = optimset('MaxIter', max_iter);
 
-c = cvpartition(y, 'k', k);
+if isOctave,
+    optcv = 'KFold';
+else
+    optcv = 'k';
+end
+
+c = cvpartition(y, optcv, k);
 
 k_acc = zeros(1, k);
 
@@ -41,9 +50,7 @@ cost = zeros(max_iter, k);
 
 for i=1:k,
     
-    % =========================
-    % === Treinamento da NN ===
-    % =========================
+    % Treinamento da NN
     
     fprintf('\nTreinando a rede neural... \n');
     fprintf('K-fold CV: k = %i\n\n', i);
@@ -53,12 +60,20 @@ for i=1:k,
     
     initial_nn_params = [initial_Theta1(:) ; initial_Theta2(:)];
     
+    if isOctave,
+        idx1 = training(c, i);
+        idx2 = test(c, i);
+    else
+        idx1 = c.training(i);
+        idx2 = c.test(i);
+    end
+    
     costFunction = @(p) cost_function(p, ...
         input_layer_size, ...
         hidden_layer_size, ...
-        num_labels, X(c.training(i), :), y(c.training(i)), lambda);
+        num_labels, X(idx1, :), y(idx1), lambda);
     
-    % FunÁ„o de otimizaÁ„o
+    % Fun√ß√£o de otimiza√ß√£o
     [nn_params, cost(:, i)] = fmincg(costFunction, initial_nn_params, options);
     
     Theta1 = reshape(nn_params(1:hidden_layer_size * (input_layer_size + 1)), ...
@@ -67,34 +82,36 @@ for i=1:k,
     Theta2 = reshape(nn_params((1 + (hidden_layer_size * (input_layer_size + 1))):end), ...
         num_labels, (hidden_layer_size + 1));
     
-    % =======================
-    % === AvaliaÁ„o da NN ===
-    % =======================
+    % Avalia√ß√£o da NN
     
-    pred = predict(Theta1, Theta2, X(c.test(i), :));
+    pred = predict(Theta1, Theta2, X(idx2, :));
     
     fprintf('\nTestando a rede neural... \n');
     fprintf('\nk: %4i | ', i);
-    k_acc(i) = mean(double(pred == y(c.test(i)))) * 100;
-    fprintf('Acur·cia: %f\n', k_acc(i));
+    k_acc(i) = mean(double(pred == y(idx2))) * 100;
+    fprintf('Acur√°cia: %f\n', k_acc(i));
     
 end
 
 accuracy = mean(k_acc);
 
-fprintf('\nAcur·cia mÈdia final do modelo: %f\n', accuracy);
+fprintf('\nAcur√°cia m√©dia final do modelo: %f\n', accuracy);
 
-if k == 3, % PrÈ-definido para este experimento
+if k == 3, % Pr√©-definido para este experimento
     x = 1:max_iter;
     f = figure;
     for i=1:k,
         p = plot(x, cost(:, i));
-        p(1).LineWidth = 1.2;
+        if ~isOctave,
+            p(1).LineWidth = 1.2;
+        end
         hold on;
     end
-    title('fmincg - Custo por iteraÁ„o');
-    xlabel('IteraÁ„o');
+    title('fmincg - Custo por itera√ß√£o');
+    xlabel('Itera√ß√£o');
     ylabel('Custo');
     hleg = legend('Custo 1', 'Custo 2', 'Custo 3');
-    set(hleg,'Location','best');
+    if ~isOctave,
+        set(hleg,'Location','best');
+    end
 end
